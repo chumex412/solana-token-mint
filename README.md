@@ -12,7 +12,7 @@ The Solana Token Mint Task was built with Rust and TypeScript. Designed to provi
   - [Continued development](#continued-development)
 - [Author](#author)
 
-## Overviewa
+## Overview
 
 ### The challenge
 
@@ -23,7 +23,7 @@ Guidelines to get started:
 - Generate a wallet by running `yarn run keygen`.
 - Copy the content from the CLI, create a `wallet.json` file in the `ts folder` directory and paste the content into the file.
 - Run the command `yarn run spl_transfer` to create a mint, create an associated token account, move the minted token to the account and transfer the minted token to a provided recipient account.
-- Finally, run `yarn run spl_metadata` to change the metadata of the minted token.
+- Finally, copy the mint address and provide it as an argument on line 19 of the file `cluster/spl_metadata.ts`, then run `yarn run spl_metadata` to change the metadata of the minted token.
 
 ### Screenshot
 
