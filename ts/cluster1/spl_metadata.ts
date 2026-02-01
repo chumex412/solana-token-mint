@@ -64,6 +64,7 @@ let count = 1;
 
     let result = await tx.sendAndConfirm(umi);
     console.log(bs58.encode(result.signature));
+    count += 1;
   } catch (e) {
     console.error(`Oops, something went wrong: ${e}`);
   }
