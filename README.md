@@ -1,48 +1,59 @@
-# Solana Token Mint
+# NFT Creation and Mint
 
-The Solana Token Mint Task was built with Rust and TypeScript. Designed to provide a practical understanding of how to mint, send and trade SPL Tokens on devnet. Although, I utilized an endpoint from quicknode.
+A simple task to create and mint an NFT asset with Metaplex. It implements basic features where users can do the following:
+
+- Upload an image file via `umi` to generate an image `uri`.
+
+- Create the image metadata `uri`.
+
+- Create and mint the NFT.
 
 ## Table of contents
 
 - [Overview](#overview)
+  - [Guideline](#guidelines)
+  - [Prerequisite](#prerequisite)
   - [The challenge](#the-challenge)
+  - [Solution](#solution)
   - [Screenshot](#screenshot)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Continued development](#continued-development)
-- [Author](#author)
+  - [Micellaneous](#miscellanous)
 
 ## Overview
 
-### The challenge
-
-Guidelines to get started:
+### Guidelines to get started
 
 - After cloning the project, navigate to `ts folder` by running `cd ts`.
 - Install the dependencies by running `yarn install` in the CLI.
 - Generate a wallet by running `yarn run keygen`.
 - Copy the content from the CLI, create a `wallet.json` file in the `ts folder` directory and paste the content into the file.
-- Run the command `yarn run spl_transfer` to create a mint, create an associated token account, move the minted token to the account and transfer the minted token to a provided recipient account.
-- Finally, copy the mint address and provide it as an argument on line 19 of the file `cluster/spl_metadata.ts`, then run `yarn run spl_metadata` to change the metadata of the minted token.
+- Run the command `yarn run nft-mint` to generate image uri, generate metadata uri, create and mint an NFT.
+
+### Prerequisite
+
+- NodeJS/Yarn
+- Solana CLI
+- TypeScript
+
+### Challenge
+
+The approach used to trade the minted NFT presented a few challenges and limitations, primarily centered around trust and efficiency. Since the trade was conducted directly between two parties, there was no reliable mechanism to verify the authenticity or enforce the agreed terms of the exchange. Either party could choose not to honor the agreement, potentially resulting in losses for the other.
+
+Additionally, this method does not scale efficiently. Coordinating trades with multiple parties or trading multiple assets becomes cumbersome, as there is no structured system in place to facilitate secure and seamless transactions.
+
+### Solution
+
+- A solution to the trade challenges would be to implement an Excrow program that handles the peer-to-peer transactions.
+
+- As for the limitation, this can be potentially resolved by implementing a program that for a Marketplace model. This contract achieves the following:
+  - Ensures sellers can list their minted assets.
+
+  - Buyers can browse and purchase.
 
 ### Screenshot
 
-![A list of transactions executed](https://res.cloudinary.com/da8vqkdmt/image/upload/v1769905063/Screen_Shot_2026-02-01_at_12.33.26_AM_ziusyk.png)
-![A preview of a minted token and it's transaction history](https://res.cloudinary.com/da8vqkdmt/image/upload/v1769905176/Screen_Shot_2026-02-01_at_1.11.18_AM_qysmza.png)
+![A screenshot of the smg-emoji Minted NFT](https://res.cloudinary.com/da8vqkdmt/image/upload/v1770498098/Screen_Shot_2026-02-07_at_9.57.54_PM_iuttpj.png)
 
-### Built with
+### Miscellanous
 
-- [Rust](https://doc.rust-lang.org/book/) - A book to learn about Rust
-- [TypeScript](https://www.typescriptlang.org/) - A TypeScript documentation
-
-### What I learned
-
-I gained an understanding of how solana accounts operate. I also learned how to mint, send and trade tokens.
-
-### Continued development
-
-I'm more fired than ever to learn so much about the Solana Ecosystem and where Rust fits into the equation.
-
-## Author
-
-- Twitter - [@kode_navigator](https://www.twitter.com/kode_navigator)
+- A hash of the minted NFT: EvxduWGbSiUVJV9mNCsWBQ1Emv3bdwugFky3UrzWN6GH
+- A Hash of the transaction: 2TJFvi4aBwsoPTH9V939Xw129TAufRtCUHMnyFPw24cFsk7kX11wjBp3rKEyggBgkzJcgePN1d7S8bw6ehwoxTtX

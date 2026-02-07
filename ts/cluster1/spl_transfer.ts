@@ -10,6 +10,7 @@ import wallet from "../wallet.json";
 import {
   createTransferInstruction,
   getOrCreateAssociatedTokenAccount,
+  transfer,
 } from "@solana/spl-token";
 
 import { createAccountAndstoreMinitedToken } from "./spl_mint";
@@ -21,13 +22,10 @@ const keypair = Keypair.fromSecretKey(new Uint8Array(wallet));
 
 //Create a Solana devnet connection
 const commitment: Commitment = "confirmed";
-const connection = new Connection(
-  "https://spring-wiser-isle.solana-devnet.quiknode.pro/79a6121b11b51c0bac5a7f561d44e2fc930fa7f0/",
-  commitment,
-);
+const connection = new Connection("https://api.devnet.solana.com", commitment);
 
 // Mint address
-// const mint = new PublicKey("<mint address>");
+const mint = new PublicKey("EvxduWGbSiUVJV9mNCsWBQ1Emv3bdwugFky3UrzWN6GH");
 
 // Recipient address
 const to = new PublicKey("J44Ypy9d5WNEDWaH5DWi7zFF9C2cVUvw4mjgzdjzYSZ5");
@@ -35,15 +33,21 @@ const to = new PublicKey("J44Ypy9d5WNEDWaH5DWi7zFF9C2cVUvw4mjgzdjzYSZ5");
 (async () => {
   try {
     // Get the token account of the fromWallet address, and if it does not exist, create it
-    const res = await createAccountAndstoreMinitedToken();
 
-    if (res === null) throw Error("Failed to create a source token account");
+    const senderAcct = await getOrCreateAssociatedTokenAccount(
+      connection,
+      keypair,
+      mint,
+      keypair.publicKey,
+      false,
+      "confirmed",
+    );
 
     // Get the token account of the toWallet address, and if it does not exist, create it
     const recipientTokenAccount = await getOrCreateAssociatedTokenAccount(
       connection,
       keypair, // payer
-      res.mint,
+      mint,
       to, // token account owner
       false,
       "confirmed",
@@ -51,27 +55,16 @@ const to = new PublicKey("J44Ypy9d5WNEDWaH5DWi7zFF9C2cVUvw4mjgzdjzYSZ5");
 
     // Transfer the new token to the "toTokenAccount" we just created
 
-    const instruction = createTransferInstruction(
-      res.sourceTokenAccount, // transfer from
+    const transaction = await transfer(
+      connection,
+      keypair,
+      senderAcct.address, // transfer from
       recipientTokenAccount.address, // transfer to
       keypair.publicKey, // source token account owner
-      token_decimals, // amount
-      [],
+      1,
     );
 
-    // Create transaction
-    const transaction = new Transaction().add(instruction);
-
-    // Sign and send transaction
-    const transactionSignature = await sendAndConfirmTransaction(
-      connection,
-      transaction,
-      [
-        keypair, // payer, owner
-      ],
-    );
-
-    console.log("Transfer txnid:", transactionSignature);
+    console.log("Transfer txnid:", transaction);
   } catch (e) {
     console.error(`Oops, something went wrong: ${e}`);
   }
